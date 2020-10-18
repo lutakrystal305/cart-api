@@ -1,7 +1,14 @@
-var jwt = require("jsonwebtoken");
-var md5 = require('md5');
-var User = require('../models/user.model');
-
+const jwt = require("jsonwebtoken");
+const md5 = require('md5');
+const User = require('../models/user.model');
+const nodemailer = require('nodemailer');
+const transporter =  nodemailer.createTransport({ // config mail server
+    service: 'gmail',
+    auth: {
+        user: 'lutakrystal305@gmail.com',
+        pass: `${process.env.PASSWORD1}`
+    }
+});
 module.exports.login = async function (req, res, next) {
   try {
     const email = req.body.email;
@@ -25,7 +32,6 @@ module.exports.login = async function (req, res, next) {
         password: password,
         token: token
       };
-      console.log(`${client.token} zz`);
       res.json(client);
     }
   } catch (error) {
@@ -37,18 +43,14 @@ module.exports.z = function (req, res, next) {
 };
 module.exports.check = async function (req, res, next) {
   const token = req.body.token;
-  console.log(`${(req.body.token)} token`);
 
   if (!token) {
     return;
   } else {
     const verified = jwt.verify(token, "shhh");
-    console.log(verified);
     const user = await User.findOne({_id: verified._id});
     if (user) {
       res.json(user);
-      console.log(`${user} mn`);
-      console.log(true);
     } else {
       console.log(false)
     }
@@ -61,10 +63,74 @@ module.exports.create = async function (req, res, next) {
     res.status(400);
     res.json({ msg: "Email already exists" });
   } else {
+    const passwordX = req.body.password
     req.body.password = md5(req.body.password);
 
     const newUser = await new User(req.body);
     newUser.save();
+    var mainOptions = { // thiết lập đối tượng, nội dung gửi mail
+      from: 'Luta Krystal',
+      to: req.body.email,
+      subject: 'Welcome to Amber!',
+      text: 'You recieved Message from Amber',
+      html: '<h1>Hi new member</h1><ul><li>Username:' + req.body.name + '</li><li>Email:' + req.body.email + '</li><li>Password:' + passwordX + '</li></ul>'
+    }
+    transporter.sendMail(mainOptions, function(err, info){
+      if (err) {
+          console.log(err);
+      } else {
+          console.log('Message sent: ' +  info.response);
+      }
+    });
     res.json(req.body);
   }
+}
+module.exports.rate = async (req, res, next) => {
+  const comment = req.body.comment;
+  let user= await User.findOneAndUpdate({_id:req.body._id}, {
+    rate: comment
+  });
+  res.json(user);
+
+}
+module.exports.getUsers = async (req, res, next) => {
+  const users = await User.find();
+  res.json(users);
+}
+module.exports.updatePhone = async (req, res) => {
+  
+  let user= await User.findOneAndUpdate({_id: req.body._id}, {$set: {
+    phone: req.body.phone
+  }});
+  
+  res.json(user);
+ 
+}
+module.exports.updateEmail = async (req, res) => {
+  let user= await User.findOneAndUpdate({_id: req.body._id}, {$set: {
+    email: req.body.email
+  }});
+  res.json(user)
+}
+module.exports.updateDate = async (req, res) => {
+  console.log(req.body.date);
+  let user= await User.findOneAndUpdate({_id: req.body._id}, {$set: {
+    date: req.body.date
+  }});
+  
+  res.json(user)
+}
+module.exports.updateUni = async (req, res) => {
+  let user= await User.findOneAndUpdate({_id: req.body._id}, {$set: {
+    uni: req.body.uni
+  }});
+  res.json(user)
+  
+}
+module.exports.updateAdd = async (req, res) => {
+  let user= await User.findOneAndUpdate({_id: req.body._id}, {$set: {
+    add: req.body.add
+  }});
+  
+  res.json(user)
 }

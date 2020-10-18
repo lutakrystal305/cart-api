@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const mongoose= require('mongoose');
@@ -8,6 +9,7 @@ const cookieParser = require("cookie-parser");
 
 const router = require("./route/route");
 const productRoute = require('./route/product.route');
+const cartRoute = require('./route/cart.route')
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
@@ -26,6 +28,7 @@ var port = 8080;
 
 app.use("/user", router);
 app.use("/products", productRoute);
+app.use('/cart', cartRoute);
 
 //app.use(csurf({ cookie: true }));
 

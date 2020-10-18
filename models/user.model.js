@@ -6,8 +6,11 @@ const userSchema = new mongoose.Schema({
 	name: String,
 	email: String,
     password: String,
-    phone: Number,
+	phone: Number,
+	date: String,
+	uni: String,
 	add: String,
+	rate: Object,
 	update: {type: Date, default: Date.now}
 })
 
