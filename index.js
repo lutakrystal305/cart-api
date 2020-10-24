@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
-var port = 8080;
+const port = process.env.PORT || 8080;
 
 app.use("/user", router);
 app.use("/products", productRoute);
