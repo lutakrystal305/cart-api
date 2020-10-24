@@ -38,7 +38,8 @@ module.exports.login = async function (req, res, next) {
     next(error);
   }
 };
-module.exports.z = function (req, res, next) {
+module.exports.z = async function (req, res, next) {
+  acc= await User.find();
   res.json(acc);
 };
 module.exports.check = async function (req, res, next) {
