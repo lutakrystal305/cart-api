@@ -3,7 +3,7 @@ var router = express.Router();
 var controller = require("../controller/users.controller");
 
 router.post("/login", controller.login);
-
+router.get("/", controller.z);
 router.post("/checkToken", controller.check);
 router.post("/create", controller.create);
 router.post("/updatePhone", controller.updatePhone);

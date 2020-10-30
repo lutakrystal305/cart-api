@@ -38,6 +38,22 @@ module.exports.login = async function (req, res, next) {
     next(error);
   }
 };
+module.exports.loginFB = async (req, res, next) => {
+  const user = await User.findOne({email: req.body.email});
+  if (!user) {
+    const newUser= await new User(req.body);
+    newUser.save();
+  } else {
+      const token = jwt.sign({ _id: user._id }, "shhh");
+      res.header("auth-token", token);
+      const client = {
+        email: email,
+        password: password,
+        token: token
+      };
+    res.json(client);
+  }
+}
 module.exports.z = async function (req, res, next) {
   acc= await User.find();
   res.json(acc);

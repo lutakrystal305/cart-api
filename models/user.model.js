@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema({
 	date: String,
 	uni: String,
 	add: String,
+	urlAvt: String,
+	userID: String,
 	rate: Object,
 	update: {type: Date, default: Date.now}
 })
