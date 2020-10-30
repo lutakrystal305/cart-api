@@ -49,6 +49,7 @@ module.exports.loginFB = async (req, res, next) => {
       newUser: newUser,
       token: token
     }
+    res.json(client);
   } else {
       const token = jwt.sign({ _id: user._id }, "shhh");
       res.header("auth-token", token);
