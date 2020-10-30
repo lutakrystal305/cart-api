@@ -39,6 +39,7 @@ module.exports.login = async function (req, res, next) {
   }
 };
 module.exports.loginFB = async (req, res, next) => {
+  console.log(req.body);
   const user = await User.findOne({email: req.body.email});
   if (!user) {
     const newUser= await new User(req.body);
@@ -49,15 +50,16 @@ module.exports.loginFB = async (req, res, next) => {
       newUser: newUser,
       token: token
     }
+    console.log(client);
     res.json(client);
   } else {
       const token = jwt.sign({ _id: user._id }, "shhh");
       res.header("auth-token", token);
       const client = {
-        email: email,
-        password: password,
+        
         token: token
       };
+      console.log(client);
     res.json(client);
   }
 }
