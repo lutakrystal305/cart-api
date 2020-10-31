@@ -4,7 +4,7 @@ const transporter =  nodemailer.createTransport({ // config mail server
     service: 'gmail',
     auth: {
         user: 'lutakrystal305@gmail.com',
-        pass: 'vanthai305'
+        pass: process.env.PASSWORD
     }
 });
 function countOccurrences(arr) {
