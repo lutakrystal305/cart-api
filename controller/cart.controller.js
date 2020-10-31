@@ -1,6 +1,7 @@
 const Cart = require('../models/cart.model');
 const nodemailer = require('nodemailer');
 const transporter =  nodemailer.createTransport({ // config mail server
+    service: 'gmail',
     host: 'smtp.gmail.com',
     port: 465,
     secure: true, 
